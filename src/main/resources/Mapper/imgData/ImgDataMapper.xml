@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lzl.mapper.imgData.ImgDataMapper">
+
+
+    <insert id="insertImgData">
+        insert into t_img (img,remark) values (#{img},#{remark})
+    </insert>
+    <select id="ImgDataSelect" resultType="com.lzl.common.VO.ImgVo">
+        select * from t_img where remark like concat ('%',#{remark},'%')
+    </select>
+
+
+</mapper>

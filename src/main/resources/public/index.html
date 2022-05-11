@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>img_up_dawn</title>
+
+</head>
+<body>
+<h1>image up and download</h1>
+<div>
+    <input type="file" id="file">
+    <button type="button" id="btn"></button>
+
+</div>
+
+<div>
+    <h2 style="accent-color: brown">img_display</h2>
+    <input type="text" placeholder="img name" id="remark">
+
+    <button type="button" id="display"></button>
+
+</div>
+
+    <img src="" alt="图片加载中……" id="img_display">
+
+<div>
+    <h2 style="accent-color: brown">img_display_look</h2>
+    <input type="text" placeholder="img name" id="remark1">
+
+    <button type="button" id="display1"></button>
+
+</div>
+
+<img src="" alt="图片加载中……" id="img_display1">
+
+
+<script type="text/javascript" src="js/axios.min.js"></script>
+
+<script>
+    let btn2 =document.querySelector('#display1');
+    btn2.onclick = function () {
+        // let text =document.querySelector('#remark').value;
+        // axios.post('http://localhost:8080/seeImg', {
+        //     img: 'test',
+        //     remark :text
+        // }).then((res) => {
+        //     console.log(res.data)
+        // })
+        let text =document.querySelector('#remark1').value;
+        axios({
+            url: 'http://localhost:8080/lookImg',
+            method: 'post',
+            params:{
+                remark:text
+            }
+        }).then(res => {
+            let img64 = res.data.object.img64;
+            img64='data:image/jpg;base64,'+img64
+            console.log(img64)
+            document.querySelector('#img_display1').src=img64;
+        }).catch(()=>{
+            alert("fail")
+        })
+    }
+
+
+</script>
+
+<script>
+    let btn1 =document.querySelector('#display');
+    btn1.onclick = function () {
+        // let text =document.querySelector('#remark').value;
+        // axios.post('http://localhost:8080/seeImg', {
+        //     img: 'test',
+        //     remark :text
+        // }).then((res) => {
+        //     console.log(res.data)
+        // })
+        let text =document.querySelector('#remark').value;
+        axios.request({
+            url: 'http://localhost:8080/seeImg',
+            responseType: 'blob',
+            method: 'post',
+            params:{
+                remark:text
+            }
+        }).then(res => {
+            let blob = new Blob([res.data],{type: "image/png"});
+            let url = window.URL.createObjectURL(blob);
+            document.querySelector('#img_display').src=url;
+        })
+    }
+
+
+</script>
+
+<script>
+    let btn = document.querySelector('#btn');
+    btn.onclick = function () {
+        let file = document.querySelector('#file').files[0];
+        var formData = new FormData();
+        formData.append('file', file);
+        // axios.post('http://localhost:8080/upload', {
+        //     file: file
+        // }).then((res) => {
+        //     console.log(res.data)
+        // })
+        axios({
+            headers: {
+                contentType: false
+            },
+            method: 'post',
+            url: 'http://localhost:8080/upload',
+            data: formData
+        }).then((res) => {
+            console.log(res.data)
+        })
+    }
+
+</script>
+</body>
+</html>
